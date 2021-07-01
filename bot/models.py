@@ -25,12 +25,20 @@ def validate_trade_balance(value):
             params={'value': value},
         )
 
+def validate_qty(value):
+    if value < 0:
+        raise ValidationError(
+            _('Минимальное кол-во не может быть меньше 0'),
+            params={'value': value},
+        )
+
+
 
 
 
 # Create your models here.
 FIRST_CHOISE = [
-    ('USDT', 'USDT')
+    ('USDT', 'USDT'),
 ]
 
 SECOND_CHOISE = [
@@ -163,7 +171,32 @@ SECOND_CHOISE = [
     ('WRX', 'WRX'),
     ('XVS', 'XVS'),
     ('REN', 'REN'),
+    ('ONG', 'ONG'),
+    ('AERGO', 'AERGO'),
+    ('NMR', 'NMR'),
+    ('ELF', 'ELF'),
+    ('SAND', 'SAND'),
+    ('ARDR', 'ARDR'),
+    ('KNC', 'KNC'),
+    ('GLM', 'GLM'),
+    ('ONG', 'ONG'),
+    ('POLY', 'POLY'),
+    ('STRAX', 'STRAX'),
+    ('DATA', 'DATA'),
+    ('ALICE', 'ALICE'),
+    ('TRU', 'TRU'),
+    ('PHA', 'PHA'),
+    ('OST', 'OST'),
+    ('INJ', 'INJ'),
+    ('BEL', 'BEL'),
+    ('CTK', 'CTK'),
+    ('BTG', 'BTG'),
+    ('CHR', 'CHR'),
+    ('GRS', 'GRS'),
+    ('CTXC', 'CTXC'),
+    ('ANKR', 'ANKR'),
 ]
+
 
 THIRD_CHOISE = [
     ('BTC', 'BTC'),
@@ -180,16 +213,18 @@ class AddBot(models.Model):
     third_asset = models.CharField(max_length=5, choices=THIRD_CHOISE, verbose_name="Третья криптовалюта")
     api_key = models.CharField(max_length=256, default='hgdMrqTZgqqhmhIlQ2jv1ZDfAe2gPxqurscpL62JLnXSUlk9lxI8vGwBKoI4PMIm', verbose_name="API ключ")
     secret_key = models.CharField(max_length=256, default='EOrL81ooW1l6WmsGb3ZrqFeOJWgLQYU3qAU2juttRtfXQZz5s6pOE7QBwN9JQgPf', verbose_name="Секретный ключ")
-    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.05, validators=[validate_percent], verbose_name="Процент прибыли, %")
+    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.16, validators=[validate_percent], verbose_name="Процент прибыли, %")
     trade_balance = models.DecimalField(max_digits=7, decimal_places=2, default=25, validators=[validate_trade_balance], verbose_name="Торговый баланс")
     bot_name = models.CharField(max_length=100, verbose_name='Имя бота', default=f'Bot {psw}')
     create_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания бота')
     activity = models.BooleanField(default=True, verbose_name='Вкл./Выкл. бота')
+    qty_1 = models.DecimalField(max_digits=9, decimal_places=8, validators=[validate_qty], verbose_name="minQty первой пары")
+    qty_2 = models.DecimalField(max_digits=9, decimal_places=8, validators=[validate_qty], verbose_name="minQty второй пары")
+    qty_3 = models.DecimalField(max_digits=9, decimal_places=8, validators=[validate_qty], verbose_name="minQty третей пары")
 
 
     def __str__(self):
         return self.bot_name
-
 
 
     class Meta:
