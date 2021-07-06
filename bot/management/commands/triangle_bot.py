@@ -28,13 +28,16 @@ class Command(BaseCommand):
                         ros = _.return_on_sales
                         trade_balance = _.trade_balance
                         active = _.activity
+                        firs_qty = _.qty_1
+                        second_qty = _.qty_2
+                        third_qty = _.qty_3
                         if active:
                             p = Process(target=RunBot, kwargs={'first_asset': first_asset, 'second_asset': second_asset,
-                                                       'third_asset': third_asset, 'api': api, 'secret': secret, 'ros': ros, 'trade_balance': trade_balance})
+                                                       'third_asset': third_asset, 'api': api, 'secret': secret, 'ros': ros, 'trade_balance': trade_balance, 'first_qty': firs_qty, 'second_qty': second_qty, 'third_qty': third_qty})
 
                             p.start()
                             proc.append(p)
-                time.sleep(600)
+                time.sleep(60*15)
                 text = 'Бот ищет профитные сделки, ожидайте...'
                 bot_data = BotProfit(logs_deal=text)
                 bot_data.save()

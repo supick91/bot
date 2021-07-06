@@ -8,7 +8,7 @@ from bot.models import BotProfit
 
 
 
-def RunBot(first_asset, second_asset, third_asset, api, secret, ros, trade_balance):
+def RunBot(first_asset, second_asset, third_asset, api, secret, ros, trade_balance, first_qty, second_qty, third_qty):
 
     if 0.01 < ros < 0.1:
 
@@ -24,7 +24,7 @@ def RunBot(first_asset, second_asset, third_asset, api, secret, ros, trade_balan
     bm = BinanceSocketManager(client)
 
     [first_order_ask, first_order_vol, second_order_bid, second_order_vol, third_order_bid,
-     third_order_vol, quantity_1, quantity_2, quantity_3] = [], [], [], [], [], [], [], [], []
+     third_order_vol] = [], [], [], [], [], []
 
 
     def max_amount(first_vol, first_ask, second_vol, third_vol, third_bid):
@@ -44,52 +44,52 @@ def RunBot(first_asset, second_asset, third_asset, api, secret, ros, trade_balan
             else:
                 return Decimal(first_vol) * Decimal(first_ask)
 
-    def first_coin_amount(trade_amount, ask, balance, second_minQty):
-        global first_coin_netto, first_coin_brutto
+    def first_coin_amount(trade_amount, ask, balance):
+        global first_coin_brutto
         if Decimal(trade_amount) <= Decimal(balance):
-            first_coin_netto = (Decimal(trade_amount) / Decimal(ask)).quantize(Decimal(f'{second_minQty}'),
+            first_coin_netto = ((Decimal(trade_amount) / Decimal(ask)) * Decimal(0.998)).quantize(Decimal(f'{second_qty}'),
                                                                                ROUND_FLOOR)
-            # first_coin_brutto = (first_coin_netto * Decimal(1.001)).quantize(Decimal(f'{minQty1}'),
-            #                                                                  ROUND_FLOOR)
+            first_coin_brutto = (first_coin_netto * Decimal(1.0011)).quantize(Decimal(f'{first_qty}'),
+                                                                             ROUND_HALF_UP)
             return first_coin_netto
 
         else:
-            first_coin_netto = (Decimal(balance) / Decimal(ask)).quantize(Decimal(f'{second_minQty}'),
+            first_coin_netto = ((Decimal(balance) / Decimal(ask)) * Decimal(0.998)).quantize(Decimal(f'{second_qty}'),
                                                                           ROUND_FLOOR)
-            # first_coin_brutto = (first_coin_netto * Decimal(1.001)).quantize(Decimal(f'{minQty1}'),
-            #                                                                  ROUND_FLOOR)
+            first_coin_brutto = (first_coin_netto * Decimal(1.0011)).quantize(Decimal(f'{first_qty}'),
+                                                                             ROUND_HALF_UP)
             return first_coin_netto
 
 
-    def second_coin_amount(first_coin, bid, minQty):
+    def second_coin_amount(first_coin_neto, bid):
         global second_coin_brutto
-        second_coin_no_round = first_coin * Decimal(bid)
-        second_coin_brutto = Decimal(second_coin_no_round).quantize(Decimal(minQty), ROUND_FLOOR)
-        second_coin_netto = (second_coin_brutto * Decimal(0.999)).quantize(Decimal(minQty), ROUND_FLOOR)
+        second_coin_no_round = first_coin_neto * Decimal(bid)
+        second_coin_brutto = Decimal(second_coin_no_round).quantize(Decimal(third_qty), ROUND_FLOOR)
+        second_coin_netto = (second_coin_brutto * Decimal(0.998)).quantize(Decimal(third_qty), ROUND_FLOOR)
         return second_coin_netto
 
 
-    def third_coin_amount(second_coin, bid, minQty):
+    def third_coin_amount(second_coin, bid):
         second_coin_no_round = second_coin * Decimal(bid)
-        third_coin_brutto = Decimal(second_coin_no_round).quantize(Decimal(f'{minQty}'), ROUND_FLOOR)
-        third_coin_netto = (third_coin_brutto * Decimal(0.999))
+        third_coin_brutto = Decimal(second_coin_no_round).quantize(Decimal(f'{third_qty}'), ROUND_FLOOR)
+        third_coin_netto = (third_coin_brutto * Decimal(0.999)).quantize(Decimal(f'{third_qty}'), ROUND_FLOOR)
         return third_coin_netto
 
-    def get_min_qty(asset_one, asset_two):
-        info = client.get_symbol_info(f'{asset_one}{asset_two}')
-        filters = info['filters'][2].get('minQty').split('.')
-        if filters[0].startswith('1'):
-            minQty = ''
-
-        elif filters[0].startswith('0'):
-            minQty = (len(filters[1].rstrip('0'))) * '0'
-
-        return minQty
-
-
-    def min_qty(list):
-        minimum = max(list)
-        return minimum
+    # def get_min_qty(asset_one, asset_two):
+    #     info = client.get_symbol_info(f'{asset_one}{asset_two}')
+    #     filters = info['filters'][2].get('minQty').split('.')
+    #     if filters[0].startswith('1'):
+    #         minQty = ''
+    #
+    #     elif filters[0].startswith('0'):
+    #         minQty = (len(filters[1].rstrip('0'))) * '0'
+    #
+    #     return minQty
+    #
+    #
+    # def min_qty(list):
+    #     minimum = max(list)
+    #     return minimum
 
 
     def process_m_message(msg):
@@ -97,16 +97,7 @@ def RunBot(first_asset, second_asset, third_asset, api, secret, ros, trade_balan
             data = msg['data']
             symbol = data.get('s')
 
-            if 'q' in data:
-
-                if symbol == f'{second_asset}{first_asset}':
-                    quantity_1.append(data.get('q'))
-                elif symbol == f'{second_asset}{third_asset}':
-                    quantity_2.append(data.get('q'))
-                elif symbol == f'{third_asset}{first_asset}':
-                    quantity_3.append(data.get('q'))
-
-            elif 'u' in data:
+            if 'u' in data:
 
                 if symbol == f'{second_asset}{first_asset}':
                     first_order_ask.append(data.get('a'))
@@ -125,102 +116,109 @@ def RunBot(first_asset, second_asset, third_asset, api, secret, ros, trade_balan
                     if len(first_order_ask) < 25 and len(second_order_bid) < 25 and len(third_order_bid) < 25:
                         pass
                     else:
-
                         try:
-                            first_minQty = min_qty(quantity_1[:20])
-                            first_minQty = first_minQty.rstrip('0').split('.')
-                            if len(first_minQty[1]) == 0:
-                                first_minQty = '1.'
-                            else:
-                                first_minQty = len(first_minQty[1])
-                                first_minQty = '1.' + first_minQty * '0'
+                            max_trade_amount = max_amount(first_order_vol[-1], first_order_ask[-1],
+                                                          second_order_vol[-1],
+                                                          third_order_vol[-1], third_order_bid[-1])
 
+                            first_coin = first_coin_amount(max_trade_amount, first_order_ask[-1],
+                                                            balance=trade_balance)
 
-                            second_minQty = min_qty(quantity_2[:20])
-                            second_minQty = second_minQty.rstrip('0').split('.')
-                            if len(second_minQty[1]) == 0:
-                                second_minQty = '1.'
-                            else:
-                                second_minQty = len(second_minQty[1])
-                                second_minQty = '1.' + second_minQty * '0'
+                            second_coin = second_coin_amount(first_coin, second_order_bid[-1])
 
+                            third_coin = third_coin_amount(second_coin, third_order_bid[-1])
 
-                            third_minQty = min_qty(quantity_3[:20])
-                            third_minQty = third_minQty.rstrip('0').split('.')
-                            if len(third_minQty[1]) == 0:
-                                third_minQty = ''
-                            else:
-                                third_minQty = len(third_minQty[1])
-                                third_minQty = '1.' + third_minQty * '0'
+                            start_trade_amount = ((first_coin_brutto * Decimal(first_order_ask[-1])) * r_o_s).quantize(
+                                Decimal(f'{third_qty}'), ROUND_FLOOR)
 
-                                if len(first_order_ask) < 0 and len(second_order_bid) < 0 and len(third_order_bid) < 0:
-                                    print('Please wait...bot load')
+                            open_position = False
 
-                                else:
-                                    max_trade_amount = max_amount(first_order_vol[-1], first_order_ask[-1],
-                                                                  second_order_vol[-1],
-                                                                  third_order_vol[-1], third_order_bid[-1])
+                            if third_coin > start_trade_amount > Decimal(12) < trade_balance and max_trade_amount > Decimal(12):
+                                start_asset = client.get_asset_balance(f'{first_asset}')
+                                while not open_position:
+                                    order = client.order_limit_buy(
+                                        symbol=f'{second_asset}{first_asset}',
+                                        quantity=first_coin_brutto,
+                                        price=f'{first_order_ask}')
+                                    print(order)
+                                    open_position = 1
+                                    break
+                                if open_position == 1:
+                                    while True:
+                                        orders = client.get_open_orders(symbol=f'{second_asset}{first_asset}')
+                                        if not orders:
+                                            s = client.get_asset_balance(f'{second_asset}')
+                                            s = Decimal(s.get('free')).quantize(Decimal(f'{second_qty}'), ROUND_FLOOR)
+                                            order = client.order_limit_sell(
+                                                symbol=f'{second_asset}{third_asset}',
+                                                quantity=s,
+                                                price=f'{second_order_bid}')
+                                            print(order)
+                                            open_position = 2
+                                            break
+                                if open_position == 2:
+                                    while True:
+                                        orders = client.get_open_orders(symbol=f'{second_asset}{third_asset}')
+                                        if not orders:
+                                            th = client.get_asset_balance(f'{third_asset}')
+                                            th = Decimal(th.get('free')).quantize(Decimal(f'{third_qty}'), ROUND_FLOOR)
+                                            order = client.order_limit_sell(
+                                                symbol=f'{third_asset}{first_asset}',
+                                                quantity=th,
+                                                price=f'{third_order_bid}')
+                                            print(order)
+                                            open_position = 3
+                                            break
+                                if open_position == 3:
+                                    while True:
+                                        orders = client.get_open_orders(symbol=f'{second_asset}{third_asset}')
+                                        if not orders:
+                                            continue
+                                finish_asset = client.get_asset_balance(f'{first_asset}')
+                                text = 'Время: {}. Успешная сделка! Стартовый баланс = {}, окончательный баланс = {}, {}>{}>{} || первая валюта брутто {} первая валюта нетто {} вторая валюта {} третья валюта {}, ПЕРВЫЙ АСК {} ПЕРВЫЙ БИД {} ВТОРОЙ БИД{}'.format(datetime.datetime.now(), start_asset, finish_asset, first_asset, second_asset, third_asset, first_coin_brutto, first_coin, second_coin, third_coin, first_order_ask[-1], second_order_bid[-1], third_order_bid[-1])
+                                bot_data = BotProfit(logs_deal=text)
+                                bot_data.save()
 
-                                    first_coin = ((first_coin_amount(max_trade_amount, first_order_ask[-1],
-                                                                    balance=trade_balance, second_minQty=second_minQty) * Decimal(1.001))).quantize(Decimal(f'{second_minQty}'), ROUND_FLOOR)
-
-                                    second_coin = second_coin_amount(first_coin_netto, second_order_bid[-1],
-                                                                     third_minQty)
-
-                                    third_coin = third_coin_amount(second_coin, third_order_bid[-1],
-                                                                   third_minQty).quantize(Decimal(f'{third_minQty}'),
-                                                                                          ROUND_FLOOR)
-
-                                    start_trade_amount = (first_coin * Decimal(first_order_ask[-1]) * r_o_s).quantize(
-                                        Decimal(f'{third_minQty}'), ROUND_FLOOR)
-
-                                    if third_coin > start_trade_amount > Decimal(12) < trade_balance and max_trade_amount > Decimal(
-                                            12):
-                                        start_asset = client.get_asset_balance(f'{first_asset}')
-
-
-                                        min1 = get_min_qty(asset_one=second_asset, asset_two=first_asset)
-                                        client.order_market_buy(
-                                            symbol=f'{second_asset}{first_asset}',
-                                            quantity=first_coin.quantize(Decimal(f'1.{min1}'), ROUND_FLOOR))
-
-
-                                        min2 = get_min_qty(asset_one=second_asset, asset_two=third_asset)
-                                        s = client.get_asset_balance(f'{second_asset}')
-                                        s = Decimal(s.get('free')).quantize(Decimal(f'1.{min2}'), ROUND_FLOOR)
-                                        client.order_market_sell(
-                                            symbol=f'{second_asset}{third_asset}',
-                                            quantity=s)
-
-
-                                        min3= get_min_qty(asset_one=third_asset, asset_two=first_asset)
-                                        th = client.get_asset_balance(f'{third_asset}')
-                                        th = Decimal(th.get('free')).quantize(Decimal(f'1.{min3}'), ROUND_FLOOR)
-                                        client.order_market_sell(
-                                            symbol=f'{third_asset}{first_asset}',
-                                            quantity=th)
-
-                                        finish_asset = client.get_asset_balance(f'{first_asset}')
-
-                                        text = 'Время: {}. Успешная сделка! Стартовый баланс = {}, окончательный баланс = {}, {}>{}>{}, первая валюта neto {}, первая валюта brutto {}, вторая валюта {} first ask {}, second {}, third bid {}, secon qty {}, first qty {}'.format(datetime.datetime.now(), start_asset, finish_asset, first_asset, second_asset, third_asset, first_coin_netto, first_coin, second_coin, first_order_ask[-1], second_order_bid[-1], third_order_bid[-1], second_minQty, first_minQty)
-                                        bot_data = BotProfit(logs_deal=text)
-                                        bot_data.save()
-                                        # print(f'first_coin_netto {first_coin_netto}')
-                                        # print(f'first_coin_brutto {first_coin}')
-                                        # print(f'second_coin {second_coin}')
-                                    # else:
-                                    # # #     print(first_coin, first_coin_netto)
-                                    #     print('Bot looking for profit tickers! Стартовый баланс = {}, окончательный баланс = {}, {}>{}>{}, первая валюта neto {}, первая валюта brutto {}, вторая валюта {} first ask {}, second {}, third bid {}, second qty {}, first qty {}'.format(start_trade_amount, third_coin, first_asset, second_asset, third_asset, first_coin_netto, first_coin, second_coin, first_order_ask[-1], second_order_bid[-1], third_order_bid[-1], second_minQty, first_minQty))
-
-                        except ValueError:
+                                    # start_asset = client.get_asset_balance(f'{first_asset}')
+                                    #
+                                    #
+                                    # client.order_market_buy(
+                                    #     symbol=f'{second_asset}{first_asset}',
+                                    #     quantity=first_coin_brutto)
+                                    #
+                                    #
+                                    # s = client.get_asset_balance(f'{second_asset}')
+                                    # s = Decimal(s.get('free')).quantize(Decimal(f'{second_qty}'), ROUND_FLOOR)
+                                    # client.order_market_sell(
+                                    #     symbol=f'{second_asset}{third_asset}',
+                                    #     quantity=s)
+                                    #
+                                    #
+                                    # th = client.get_asset_balance(f'{third_asset}')
+                                    # th = Decimal(th.get('free')).quantize(Decimal(f'{third_qty}'), ROUND_FLOOR)
+                                    # client.order_market_sell(
+                                    #     symbol=f'{third_asset}{first_asset}',
+                                    #     quantity=th)
+                                    #
+                                    # finish_asset = client.get_asset_balance(f'{first_asset}')
+                                    # #
+                                    # text = 'Время: {}. Успешная сделка! Стартовый баланс = {}, окончательный баланс = {}, {}>{}>{} || первая валюта брутто {} первая валюта нетто {} вторая валюта {} третья валюта {}, ПЕРВЫЙ АСК {} ПЕРВЫЙ БИД {} ВТОРОЙ БИД{}'.format(datetime.datetime.now(), start_asset, finish_asset, first_asset, second_asset, third_asset, first_coin_brutto, first_coin, second_coin, third_coin, first_order_ask[-1], second_order_bid[-1], third_order_bid[-1])
+                                    # bot_data = BotProfit(logs_deal=text)
+                                    # bot_data.save()
+                                    # # print(f'first_coin_netto {first_coin_netto}')
+                                    # # print(f'first_coin_brutto {first_coin}')
+                                    # # print(f'second_coin {second_coin}')
+                            # else:
+                            #     print(f'Бот ищет профитную сделку направления {first_asset} > {second_asset} > {third_asset}. Стартовый баланс: {start_trade_amount}, финальный: {third_coin}')
+                        except Exception:
                             pass
+
+
+
 
     conn_key = bm.start_multiplex_socket([f'{second_asset.lower()}{first_asset.lower()}@bookTicker',
                                           f'{second_asset.lower()}{third_asset.lower()}@bookTicker',
                                           f'{third_asset.lower()}{first_asset.lower()}@bookTicker',
-                                          f'{second_asset.lower()}{first_asset.lower()}@trade',
-                                          f'{second_asset.lower()}{third_asset.lower()}@trade',
-                                          f'{third_asset.lower()}{first_asset.lower()}@trade'
                                           ],
                                          process_m_message)
 

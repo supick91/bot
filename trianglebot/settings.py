@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'trianglebot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bot',
+        'NAME': 'sammy',
         'USER': 'admin',
         'PASSWORD': '585898',
         'HOST': 'localhost',

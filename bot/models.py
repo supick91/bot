@@ -42,6 +42,24 @@ FIRST_CHOISE = [
 ]
 
 SECOND_CHOISE = [
+    ('ARPA', 'ARPA'),
+    ('NULS', 'NULS'),
+    ('TKO', 'TKO'),
+    ('OM', 'OM'),
+    ('AION', 'AION'),
+    ('GXS', 'GXS'),
+    ('WING', 'WING'),
+    ('REP', 'REP'),
+    ('SFP', 'SFP'),
+    ('GTO', 'GTO'),
+    ('ORN', 'ORN'),
+    ('CFX', 'CFX'),
+    ('ROSE', 'ROSE'),
+    ('WAN', 'WAN'),
+    ('BOND', 'BOND'),
+    ('POND', 'POND'),
+    ('BTS', 'BTS'),
+    ('WTC', 'WTC'),
     ('ETH', 'ETH'),
     ('BNB', 'BNB'),
     ('ADA', 'ADA'),
@@ -51,8 +69,6 @@ SECOND_CHOISE = [
     ('SOL', 'SOL'),
     ('LTC', 'LTC'),
     ('LINK', 'LINK'),
-    ('ICP', 'ICP'),
-    ('WBTC', 'WBTC'),
     ('ETC', 'ETC'),
     ('KSM', 'KSM'),
     ('VET', 'VET'),
@@ -65,8 +81,6 @@ SECOND_CHOISE = [
     ('EOS', 'EOS'),
     ('XMR', 'XMR'),
     ('UNI', 'UNI'),
-    ('PPT', 'PPT'),
-    ('IOTX', 'IOTX'),
     ('THETA', 'THETA'),
     ('SUSHI', 'SUSHI'),
     ('FIL', 'FIL'),
@@ -75,44 +89,32 @@ SECOND_CHOISE = [
     ('TRX', 'TRX'),
     ('ZIL', 'ZIL'),
     ('ATOM', 'ATOM'),
-    ('IOST', 'IOST'),
     ('XLM', 'XLM'),
     ('CELO', 'CELO'),
     ('SXP', 'SXP'),
     ('LUNA', 'LUNA'),
     ('1INCH', '1INCH'),
     ('YFI', 'YFI'),
-    ('XVG', 'XVG'),
     ('OMG', 'OMG'),
     ('BNT', 'BNT'),
-    ('ZEK', 'ZEK'),
     ('CAKE', 'CAKE'),
     ('PERP', 'PERP'),
-    ('SC', 'SC'),
     ('FTM', 'FTM'),
-    ('BQX', 'BQX'),
     ('NANO', 'NANO'),
     ('ONT', 'ONT'),
     ('ENJ', 'ENJ'),
     ('WAVES', 'WAVES'),
     ('CTSI', 'CTSI'),
     ('ICX', 'ICX'),
-    ('LSX', 'LSX'),
     ('ALGO', 'ALGO'),
-    ('AUDI', 'AUDI'),
-    ('STMX', 'STMX'),
     ('SNX', 'SNX'),
     ('LRC', 'LRC'),
-    ('ADX', 'ADX'),
     ('GRT', 'GRT'),
     ('HIVE', 'HIVE'),
     ('XTZ', 'XTZ'),
-    ('BCD', 'BCD'),
-    ('DIA', 'DIA'),
     ('HBAR', 'HBAR'),
     ('BZRX', 'BZRX'),
     ('IOTA', 'IOTA'),
-    ('ATA', 'ATA'),
     ('PAXG', 'PAXG'),
     ('OGN', 'OGN'),
     ('CRV', 'CRV'),
@@ -120,19 +122,15 @@ SECOND_CHOISE = [
     ('ONE', 'ONE'),
     ('CELR', 'CELR'),
     ('GTC', 'GTC'),
-    ('SNT', 'SNT'),
     ('SKL', 'SKL'),
     ('BAT', 'BAT'),
     ('XEM', 'XEM'),
-    ('ARK', 'ARK'),
     ('MDX', 'MDX'),
     ('ZRX', 'ZRX'),
     ('QTUM', 'QTUM'),
-    ('MDA', 'MDA'),
     ('FORTH', 'FORTH'),
     ('LTO', 'LTO'),
     ('AVAX', 'AVAX'),
-    ('LOOM', 'LOOM'),
     ('MTL', 'MTL'),
     ('STPT', 'STPT'),
     ('COTI', 'COTI'),
@@ -140,18 +138,14 @@ SECOND_CHOISE = [
     ('TLM', 'TLM'),
     ('MKR', 'MKR'),
     ('BAL', 'BAL'),
-    ('GAS', 'GAS'),
     ('RLC', 'RLC'),
     ('STX', 'STX'),
     ('ZEN', 'ZEN'),
     ('BAKE', 'BAKE'),
-    ('DOCK', 'DOCK'),
     ('KAVA', 'KAVA'),
     ('TOMO', 'TOMO'),
-    ('STEEM', 'STEEM'),
     ('PERL', 'PERL'),
     ('MANA', 'MANA'),
-    ('POWR', 'POWR'),
     ('BAND', 'BAND'),
     ('DCR', 'DCR'),
     ('SRM', 'SRM'),
@@ -172,29 +166,51 @@ SECOND_CHOISE = [
     ('XVS', 'XVS'),
     ('REN', 'REN'),
     ('ONG', 'ONG'),
-    ('AERGO', 'AERGO'),
     ('NMR', 'NMR'),
-    ('ELF', 'ELF'),
     ('SAND', 'SAND'),
     ('ARDR', 'ARDR'),
     ('KNC', 'KNC'),
-    ('GLM', 'GLM'),
     ('ONG', 'ONG'),
-    ('POLY', 'POLY'),
     ('STRAX', 'STRAX'),
     ('DATA', 'DATA'),
     ('ALICE', 'ALICE'),
     ('TRU', 'TRU'),
-    ('PHA', 'PHA'),
-    ('OST', 'OST'),
     ('INJ', 'INJ'),
     ('BEL', 'BEL'),
     ('CTK', 'CTK'),
     ('BTG', 'BTG'),
     ('CHR', 'CHR'),
-    ('GRS', 'GRS'),
     ('CTXC', 'CTXC'),
     ('ANKR', 'ANKR'),
+    ('POLS', 'POLS'),
+    ('TRB', 'TRB'),
+    ('PSG', 'PSG'),
+    ('LINA', 'LINA'),
+    ('OXT', 'OXT'),
+    ('UTK', 'UTK'),
+    ('HNT', 'HNT'),
+    ('JUV', 'JUV'),
+    ('AR', 'AR'),
+    ('COS', 'COS'),
+    ('YFII', 'YFII'),
+    ('AVA', 'AVA'),
+    ('FIRO', 'FIRO'),
+    ('DEGO', 'DEGO'),
+    ('FIS', 'FIS'),
+    ('DNT', 'DNT'),
+    ('AUTO', 'AUTO'),
+    ('FLM', 'FLM'),
+    ('IRIS', 'IRIS'),
+    ('ATM', 'ATM'),
+    ('BAR', 'BAR'),
+    ('NBS', 'NBS'),
+    ('COS', 'COS'),
+    ('HARD', 'HARD'),
+    ('PNT', 'PNT'),
+    ('MIR', 'MIR'),
+    ('UNFI', 'UNFI'),
+    ('LPT', 'LPT'),
+    ('OG', 'OG'),
 ]
 
 
@@ -204,23 +220,22 @@ THIRD_CHOISE = [
 
 
 class AddBot(models.Model):
-    psw = ''
-    for x in range(4):
-        psw = psw + random.choice(list('1234567890'))
+    count = random.randrange(1, 10000, 1)
+
 
     first_asset = models.CharField(max_length=5, choices=FIRST_CHOISE, verbose_name='Первая криптовалюта')
     second_asset = models.CharField(max_length=5, choices=SECOND_CHOISE, verbose_name="Вторая криптовалюта")
     third_asset = models.CharField(max_length=5, choices=THIRD_CHOISE, verbose_name="Третья криптовалюта")
     api_key = models.CharField(max_length=256, default='hgdMrqTZgqqhmhIlQ2jv1ZDfAe2gPxqurscpL62JLnXSUlk9lxI8vGwBKoI4PMIm', verbose_name="API ключ")
     secret_key = models.CharField(max_length=256, default='EOrL81ooW1l6WmsGb3ZrqFeOJWgLQYU3qAU2juttRtfXQZz5s6pOE7QBwN9JQgPf', verbose_name="Секретный ключ")
-    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.16, validators=[validate_percent], verbose_name="Процент прибыли, %")
-    trade_balance = models.DecimalField(max_digits=7, decimal_places=2, default=25, validators=[validate_trade_balance], verbose_name="Торговый баланс")
-    bot_name = models.CharField(max_length=100, verbose_name='Имя бота', default=f'Bot {psw}')
+    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.05, validators=[validate_percent], verbose_name="Процент прибыли, %")
+    trade_balance = models.DecimalField(max_digits=7, decimal_places=2, default=108, validators=[validate_trade_balance], verbose_name="Торговый баланс")
+    bot_name = models.CharField(max_length=100, verbose_name='Имя бота', default=count)
     create_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания бота')
     activity = models.BooleanField(default=True, verbose_name='Вкл./Выкл. бота')
-    qty_1 = models.DecimalField(max_digits=9, decimal_places=8, validators=[validate_qty], verbose_name="minQty первой пары")
-    qty_2 = models.DecimalField(max_digits=9, decimal_places=8, validators=[validate_qty], verbose_name="minQty второй пары")
-    qty_3 = models.DecimalField(max_digits=9, decimal_places=8, validators=[validate_qty], verbose_name="minQty третей пары")
+    qty_1 = models.CharField(max_length=8, verbose_name="minQty первой пары",)
+    qty_2 = models.CharField(max_length=8, verbose_name="minQty второй пары",)
+    qty_3 = models.CharField(max_length=8,  verbose_name="minQty третей пары", default='1.000000')
 
 
     def __str__(self):
