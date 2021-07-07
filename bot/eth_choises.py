@@ -1,0 +1,55 @@
+# FIRST_CHOISE_ETH = [
+#     ('USDT', 'USDT'),
+# ]
+
+SECOND_CHOISE_ETH = [
+    ('LRC', 'LRC'),
+    ('ZEN', 'ZEN'),
+    ('FIRO', 'FIRO'),
+    ('GXS', 'GXS'),
+    ('STRAX', 'STRAX'),
+    #
+    ('BNB', 'BNB'),
+    ('AAVE', 'AAVE'),
+    ('TRX', 'TRX'),
+    ('ADA', 'ADA'),
+    ('XRP', 'XRP'),
+    ('LTC', 'LTC'),
+    ('LINK', 'LINK'),
+    ('VET', 'VET'),
+    ('ENJ', 'ENJ'),
+    ('ETC', 'ETC'),
+    ('NEO', 'NEO'),
+    ('EOS', 'EOS'),
+    ('THETA', 'THETA'),
+    ('XLM', 'XLM'),
+    ('GRT', 'GRT'),
+    ('CVC', 'CVC'),
+    ('ZIL', 'ZIL'),
+    ('DASH', 'DASH'),
+    ('RLC', 'RLC'),
+    ('OMG', 'OMG'),
+    ('QTUM', 'QTUM'),
+    ('ZRX', 'ZRX'),
+    ('WAVES', 'WAVES'),
+    ('MANA', 'MANA'),
+    ('ICX', 'ICX'),
+    ('KMD', 'KMD'),
+    ('IOTA', 'IOTA'),
+    ('DATA', 'DATA'),
+    ('ZEC', 'ZEC'),
+    ('ONT', 'ONT'),
+    ('LSK', 'LSK'),
+    ('MTL', 'MTL'),
+    ('XEM', 'XEM'),
+    ('KNC', 'KNC'),
+    ('BLZ', 'BLZ'),
+    ('BNT', 'BNT'),
+    ('BAT', 'BAT'),
+    ('WAN', 'WAN'),
+]
+
+#
+# THIRD_CHOISE_ETH = [
+#     ('ETH', 'ETH'),
+# ]

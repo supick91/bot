@@ -1,6 +1,6 @@
 
 from django.core.management.base import BaseCommand
-from bot.models import AddBotBTC, BotProfit
+from bot.models import AddBotBNB, BotProfit
 from multiprocessing import Process
 from bot.multi import RunBot
 import time
@@ -15,7 +15,7 @@ class Command(BaseCommand):
         proc = []
         while True:
             try:
-                for _ in AddBotBTC.objects.get_queryset():
+                for _ in AddBotBNB.objects.get_queryset():
                         first_asset = _.first_asset
                         second_asset = _.second_asset
                         third_asset = _.third_asset
@@ -34,7 +34,7 @@ class Command(BaseCommand):
                             p.start()
                             proc.append(p)
                 time.sleep(60*30)
-                text = 'Бот BTC ищет профитные сделки, ожидайте...'
+                text = 'Бот BNB ищет профитные сделки, ожидайте...'
                 bot_data = BotProfit(logs_deal=text)
                 bot_data.save()
                 for p in proc:
@@ -42,7 +42,7 @@ class Command(BaseCommand):
                     p.join()
 
             except Exception as e:
-                text2 = 'Возникла ошибка при работе бота BTC, причина: {}'.format({e})
+                text2 = 'Возникла ошибка при работе бота BNB, причина: {}'.format({e})
                 bot_data = BotProfit(logs_deal=text2)
                 bot_data.save()
 
