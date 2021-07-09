@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib import messages
+from django.contrib.admin.decorators import display
 from django.utils.translation import ngettext
 from .models import AddBotBTC, AddBotETH, AddBotBNB, BotProfit
 
@@ -29,7 +30,7 @@ class BotAdminBTC(admin.ModelAdmin):
 
     @admin.action(description='Изменить процент прибыли ботов BTC')
     def change_ros(self, request, queryset):
-        updated = queryset.update(return_on_sales=0.02, trade_balance=20)
+        updated = queryset.update(return_on_sales=0.01, trade_balance=19)
         self.message_user(request, ngettext(
             '%d процент успешно изменен.',
             '%d проценты успешно изменены',
@@ -39,7 +40,7 @@ class BotAdminBTC(admin.ModelAdmin):
     list_display = (
     'id', 'bot_name', 'create_at', 'return_on_sales', 'first_asset', 'second_asset', 'third_asset', 'activity')
     search_fields = ['id', 'bot_name']
-    list_filter = ['create_at', 'bot_name']
+    list_filter = ['create_at', 'bot_name', 'activity']
     list_display_links = ['id', 'bot_name']
     list_editable = ['activity', 'return_on_sales']
     actions = [off_bot, on_bot, change_ros]
@@ -67,7 +68,7 @@ class BotAdminETH(admin.ModelAdmin):
 
     @admin.action(description='Изменить процент прибыли ботов ETH')
     def change_ros(self, request, queryset):
-        updated = queryset.update(return_on_sales=0.02, trade_balance=20)
+        updated = queryset.update(return_on_sales=0.01, trade_balance=19)
         self.message_user(request, ngettext(
             '%d процент успешно изменен.',
             '%d проценты успешно изменены',
@@ -77,7 +78,7 @@ class BotAdminETH(admin.ModelAdmin):
     list_display = (
     'id', 'bot_name', 'create_at', 'return_on_sales', 'first_asset', 'second_asset', 'third_asset', 'activity')
     search_fields = ['id', 'bot_name']
-    list_filter = ['create_at', 'bot_name']
+    list_filter = ['create_at', 'bot_name', 'activity']
     list_display_links = ['id', 'bot_name']
     list_editable = ['activity', 'return_on_sales']
     actions = [off_bot, on_bot, change_ros]
@@ -105,7 +106,7 @@ class BotAdminBNB(admin.ModelAdmin):
 
     @admin.action(description='Изменить процент прибыли ботов BNB')
     def change_ros(self, request, queryset):
-        updated = queryset.update(return_on_sales=0.02, trade_balance=20)
+        updated = queryset.update(return_on_sales=0.01, trade_balance=19)
         self.message_user(request, ngettext(
             '%d процент успешно изменен.',
             '%d проценты успешно изменены',
@@ -115,7 +116,7 @@ class BotAdminBNB(admin.ModelAdmin):
     list_display = (
     'id', 'bot_name', 'create_at', 'return_on_sales', 'first_asset', 'second_asset', 'third_asset', 'activity')
     search_fields = ['id', 'bot_name']
-    list_filter = ['create_at', 'bot_name']
+    list_filter = ['create_at', 'bot_name', 'activity']
     list_display_links = ['id', 'bot_name']
     list_editable = ['activity', 'return_on_sales']
     actions = [off_bot, on_bot, change_ros]

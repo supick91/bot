@@ -3,20 +3,8 @@
 # ]
 
 SECOND_CHOISE_BNB = [
-    ('AXS', 'AXS'),
-    ('CRV', 'CRV'),
-    ('ZEN', 'ZEN'),
-    ('DGB', 'DGB'),
-    ('ONT', 'ONT'),
-    ('ICX', 'ICX'),
-    ('BAKE', 'BAKE'),
-    ('ANKR', 'ANKR'),
-    ('RVN', 'RVN'),
-    ('AR', 'AR'),
-    ('LPT', 'LPT'),
-    ('RSR', 'RSR'),
-    ('WRX', 'WRX'),
-    ('KAVA', 'KAVA'),
+    ('MDX', 'MDX'),
+    ('FTM', 'FTM'),
     #
     ('ADA', 'ADA'),
     ('XRP', 'XRP'),
@@ -59,6 +47,20 @@ SECOND_CHOISE_BNB = [
     ('ENJ', 'ENJ'),
     ('NEAR', 'NEAR'),
     ('ZIL', 'ZIL'),
+    ('AXS', 'AXS'),
+    ('CRV', 'CRV'),
+    ('ZEN', 'ZEN'),
+    ('DGB', 'DGB'),
+    ('ONT', 'ONT'),
+    ('ICX', 'ICX'),
+    ('BAKE', 'BAKE'),
+    ('ANKR', 'ANKR'),
+    ('RVN', 'RVN'),
+    ('AR', 'AR'),
+    ('LPT', 'LPT'),
+    ('RSR', 'RSR'),
+    ('WRX', 'WRX'),
+    ('KAVA', 'KAVA'),
 ]
 
 #

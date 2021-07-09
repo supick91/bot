@@ -1,3 +1,4 @@
+
 from django.db import models
 from bot.btc_choises import SECOND_CHOISE_BTC
 from bot.eth_choises import SECOND_CHOISE_ETH
@@ -51,8 +52,8 @@ class AddBotBTC(models.Model):
     third_asset = models.CharField(max_length=5, default='BTC', verbose_name="Третья криптовалюта")
     api_key = models.CharField(max_length=256, default='hgdMrqTZgqqhmhIlQ2jv1ZDfAe2gPxqurscpL62JLnXSUlk9lxI8vGwBKoI4PMIm', verbose_name="API ключ")
     secret_key = models.CharField(max_length=256, default='EOrL81ooW1l6WmsGb3ZrqFeOJWgLQYU3qAU2juttRtfXQZz5s6pOE7QBwN9JQgPf', verbose_name="Секретный ключ")
-    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.02, validators=[validate_percent], verbose_name="Процент прибыли, %")
-    trade_balance = models.DecimalField(max_digits=7, decimal_places=2, default=20, validators=[validate_trade_balance], verbose_name="Торговый баланс")
+    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.01, validators=[validate_percent], verbose_name="Процент прибыли, %")
+    trade_balance = models.DecimalField(max_digits=7, decimal_places=2, default=19, validators=[validate_trade_balance], verbose_name="Торговый баланс")
     bot_name = models.CharField(max_length=100, verbose_name='Имя бота', default=count)
     create_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания бота')
     activity = models.BooleanField(default=True, verbose_name='Вкл./Выкл. бота')
@@ -80,8 +81,8 @@ class AddBotETH(models.Model):
     third_asset = models.CharField(max_length=5, default='ETH', verbose_name="Третья криптовалюта")
     api_key = models.CharField(max_length=256, default='hgdMrqTZgqqhmhIlQ2jv1ZDfAe2gPxqurscpL62JLnXSUlk9lxI8vGwBKoI4PMIm', verbose_name="API ключ")
     secret_key = models.CharField(max_length=256, default='EOrL81ooW1l6WmsGb3ZrqFeOJWgLQYU3qAU2juttRtfXQZz5s6pOE7QBwN9JQgPf', verbose_name="Секретный ключ")
-    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.02, validators=[validate_percent], verbose_name="Процент прибыли, %")
-    trade_balance = models.DecimalField(max_digits=7, decimal_places=2, default=20, validators=[validate_trade_balance], verbose_name="Торговый баланс")
+    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.01, validators=[validate_percent], verbose_name="Процент прибыли, %")
+    trade_balance = models.DecimalField(max_digits=7, decimal_places=2, default=19, validators=[validate_trade_balance], verbose_name="Торговый баланс")
     bot_name = models.CharField(max_length=100, verbose_name='Имя бота', default=count)
     create_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания бота')
     activity = models.BooleanField(default=True, verbose_name='Вкл./Выкл. бота')
@@ -109,8 +110,8 @@ class AddBotBNB(models.Model):
     third_asset = models.CharField(max_length=5, default='BNB', verbose_name="Третья криптовалюта")
     api_key = models.CharField(max_length=256, default='hgdMrqTZgqqhmhIlQ2jv1ZDfAe2gPxqurscpL62JLnXSUlk9lxI8vGwBKoI4PMIm', verbose_name="API ключ")
     secret_key = models.CharField(max_length=256, default='EOrL81ooW1l6WmsGb3ZrqFeOJWgLQYU3qAU2juttRtfXQZz5s6pOE7QBwN9JQgPf', verbose_name="Секретный ключ")
-    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.02, validators=[validate_percent], verbose_name="Процент прибыли, %")
-    trade_balance = models.DecimalField(max_digits=7, decimal_places=2, default=20, validators=[validate_trade_balance], verbose_name="Торговый баланс")
+    return_on_sales = models.DecimalField(max_digits=5, decimal_places=2, default=0.01, validators=[validate_percent], verbose_name="Процент прибыли, %")
+    trade_balance = models.DecimalField(max_digits=7, decimal_places=2, default=19, validators=[validate_trade_balance], verbose_name="Торговый баланс")
     bot_name = models.CharField(max_length=100, verbose_name='Имя бота', default=count)
     create_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания бота')
     activity = models.BooleanField(default=True, verbose_name='Вкл./Выкл. бота')
@@ -139,16 +140,5 @@ class BotProfit(models.Model):
 
     class Meta:
         ordering = ['-deal_time']
-        verbose_name = 'Логи работы бота'
-        verbose_name_plural = 'Логи работы бота'
-
-
-
-
-
-
-
-
-
-
-
+        verbose_name = 'Логи работы бота Binance'
+        verbose_name_plural = 'Логи работы бота Binance'

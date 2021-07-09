@@ -3,6 +3,17 @@
 # ]
 
 SECOND_CHOISE_BTC = [
+    ('XEM', 'XEM'),
+    ('HNT', 'HNT'),
+    ('CHZ', 'CHZ'),
+    ('MANA', 'MANA'),
+    ('ONE', 'ONE'),
+    ('MATIC', 'MATIC'),
+    ('ZEN', 'ZEN'),
+    ('FTM', 'FTM'),
+    ('CELO', 'CELO'),
+    ('STX', 'STX'),
+    ('RUNE', 'RUNE'),
     ('PERP', 'PERP'),
     ('FTM', 'FTM'),
     ('NANO', 'NANO'),
