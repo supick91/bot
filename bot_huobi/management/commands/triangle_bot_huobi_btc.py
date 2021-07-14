@@ -22,8 +22,8 @@ class Command(BaseCommand):
                         first_asset = _.first_asset
                         second_asset = _.second_asset
                         third_asset = _.third_asset
-                        api = _.api_key
-                        secret = _.secret_key
+                        access_key = _.api_key
+                        secret_key = _.secret_key
                         ros = _.return_on_sales
                         trade_balance = _.trade_balance
                         active = _.activity
@@ -32,7 +32,7 @@ class Command(BaseCommand):
                         third_qty = _.qty_3
                         if active:
                             p = Process(target=RunBot, kwargs={'first_asset': first_asset, 'second_asset': second_asset,
-                                                       'third_asset': third_asset, 'api': api, 'secret': secret, 'ros': ros, 'trade_balance': trade_balance, 'first_qty': firs_qty, 'second_qty': second_qty, 'third_qty': third_qty})
+                                                       'third_asset': third_asset, 'access_key': access_key, 'secret_key': secret_key, 'ros': ros, 'balance': trade_balance, 'first_qty': firs_qty, 'second_qty': second_qty, 'third_qty': third_qty})
 
                             p.start()
                             proc.append(p)
@@ -45,3 +45,4 @@ class Command(BaseCommand):
                     p.join()
 
             except Exception as e:
+                print(e)

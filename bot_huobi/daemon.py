@@ -1,26 +1,17 @@
 
+from bot_huobi.models import HuobiBotProfit
+# from huobi.client.market import MarketClient
 from huobi.client.market import MarketClient
+from huobi.utils import *
 from huobi.constant import *
-from huobi.utils.input_checker import format_date
-
-
-# ACCESS_KEY = 'f5b12b8e-60f1b783-1hrfj6yhgg-a1a64'
-# SECRET_KEY = 'ddb2a042-aa4ede09-2ee1b5aa-57382'
-
-# last_ask_price, last_bid_price_ada_eth, last_bid_price_eth_usdt = [], [], []
-
-
-from huobi.web_socket import subscribe
-from functools import partial
 from decimal import Decimal, ROUND_HALF_UP, ROUND_FLOOR
 import asyncio
-import json
-import gzip
 
 
 
 
-def RunBot(first_asset, second_asset, third_asset, ros, balance, first_qty, second_qty, third_qty):
+
+def RunBot(first_asset, second_asset, third_asset, access_key, secret_key, ros, balance, first_qty, second_qty, third_qty):
 
     if 0.01 < ros < 0.1:
 
@@ -88,30 +79,30 @@ def RunBot(first_asset, second_asset, third_asset, ros, balance, first_qty, seco
         return third_coin_netto
 
 
-    async def callback(callback_data):
+    def callback(mbp_event: 'MbpFullEvent'):
 
 
-        if callback_data['ch'] == ('market.{}{}.mbp.refresh.10'.format(second_asset, first_asset)).lower():
-            tick_1 = callback_data['tick']
-            tick_ask_list = tick_1['asks']
+        if mbp_event[1] == ('market.{}{}.mbp.refresh.5'.format(second_asset, first_asset)).lower():
+            tick_1 = mbp_event[0]
+            tick_ask_list = tick_1.get('asks')
             tick_ask = tick_ask_list[0]
             best_ask_price = tick_ask[0]
             vol_best_ask_price = tick_ask[1]
             first_order_ask.append(best_ask_price)
             first_order_vol.append(vol_best_ask_price)
 
-        elif callback_data['ch'] == ('market.{}{}.mbp.refresh.10'.format(second_asset, third_asset)).lower():
-            tick_2 = callback_data['tick']
-            tick_bid_list = tick_2['bids']
+        elif mbp_event[1] == ('market.{}{}.mbp.refresh.5'.format(second_asset, third_asset)).lower():
+            tick_2 = mbp_event[0]
+            tick_bid_list = tick_2.get('bids')
             tick_bid = tick_bid_list[0]
             best_first_bid_price = tick_bid[0]
             vol_best_first_bid_price = tick_bid[1]
             second_order_bid.append(best_first_bid_price)
             second_order_vol.append(vol_best_first_bid_price)
 
-        elif callback_data['ch'] == ('market.{}{}.mbp.refresh.10'.format(third_asset, first_asset)).lower():
-            tick_3 = callback_data['tick']
-            tick_bid_list = tick_3['bids']
+        elif mbp_event[1] == ('market.{}{}.mbp.refresh.5'.format(third_asset, first_asset)).lower():
+            tick_3 = mbp_event[0]
+            tick_bid_list = tick_3.get('bids')
             tick_bid = tick_bid_list[0]
             best_second_bid_price = tick_bid[0]
             vol_best_second_bid_price = tick_bid[1]
@@ -139,25 +130,19 @@ def RunBot(first_asset, second_asset, third_asset, ros, balance, first_qty, seco
 
 
                     if third_coin > start_trade_amount > Decimal(12) < balance and max_trade_amount > Decimal(12):
-                        print(f'Deal done! Soon you will be reach. START BALANCE = {start_trade_amount} FINAL BALANCE = {third_coin}')
-                    else:
-                        print(f'DEAL NOT PROFIT. START BALANCE = {start_trade_amount} FINAL BALANCE = {third_coin}')
+                        print(f'Успешная сделка. Стартовый торговый баланс = {start_trade_amount} Финальный баланс = {third_coin}. {first_asset}>{second_asset}>{third_asset}')
+                        text = f'Успешная сделка. Стартовый торговый баланс = {start_trade_amount} Финальный баланс = {third_coin}. {first_asset}>{second_asset}>{third_asset}'
+                        bot_data = HuobiBotProfit(logs_deal=text)
+                        bot_data.save()
+                    # else:
+                    #     print(f'Бот ищет профитные сделки. Стартовый торговый баланс = {start_trade_amount} Финальный баланс = {third_coin}. {first_asset}>{second_asset}>{third_asset}')
                 except Exception as e:
                     print(e)
 
-
-
-    task = subscribe({
-                ('market.{}{}.mbp.refresh.10'.format(second_asset, first_asset)).lower(): {
-                    'callback': callback
-                },
-                ('market.{}{}.mbp.refresh.10'.format(second_asset, third_asset)).lower(): {
-                    'callback': callback
-                },
-                ('market.{}{}.mbp.refresh.10'.format(third_asset, first_asset)).lower(): {
-                    'callback': callback
-                }
-            })
+    
+    def error(e: 'HuobiApiException'):
+        print(e.error_code + e.error_message)
 
             
-    asyncio.get_event_loop().run_until_complete(task)
+    market_client = MarketClient(init_log=False)
+    market_client.sub_mbp_full(f"{second_asset.lower()}{first_asset.lower()},{second_asset.lower()}{third_asset.lower()},{third_asset.lower()}{first_asset.lower()}", MbpLevel.MBP5, callback, error)

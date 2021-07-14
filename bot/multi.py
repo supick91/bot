@@ -46,14 +46,14 @@ def RunBot(first_asset, second_asset, third_asset, api, secret, ros, trade_balan
     def first_coin_amount(trade_amount, ask, balance):
         global first_coin_brutto
         if Decimal(trade_amount) <= Decimal(balance):
-            first_coin_netto = ((Decimal(trade_amount) / Decimal(ask)) * Decimal(0.998)).quantize(Decimal(f'{second_qty}'),
+            first_coin_netto = ((Decimal(trade_amount) / Decimal(ask)) * Decimal(0.999)).quantize(Decimal(f'{second_qty}'),
                                                                                ROUND_FLOOR)
             first_coin_brutto = (first_coin_netto * Decimal(1.001)).quantize(Decimal(f'{first_qty}'),
                                                                              ROUND_HALF_UP)
             return first_coin_netto
 
         else:
-            first_coin_netto = ((Decimal(balance) / Decimal(ask)) * Decimal(0.998)).quantize(Decimal(f'{second_qty}'),
+            first_coin_netto = ((Decimal(balance) / Decimal(ask)) * Decimal(0.999)).quantize(Decimal(f'{second_qty}'),
                                                                           ROUND_FLOOR)
             first_coin_brutto = (first_coin_netto * Decimal(1.001)).quantize(Decimal(f'{first_qty}'),
                                                                              ROUND_HALF_UP)
